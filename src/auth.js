@@ -11,9 +11,8 @@ const Comment = require('./model.js').Comment
 const request = require('request')
 const session = require('express-session')
 const passport = require('passport')
-const FacebookStrategy = require('passport-facebook').Strategy;
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-const secret = 'I like to be a web developer!'
+const secret = 'wwwwwwwwwwwwwwwwwww!'
 const redis = require('redis').createClient('redis://:p30c6a1c9c37f808d4343f9b0adefcaf373e7b8ebe64e02ff8eba59d442626ee7@ec2-52-21-75-239.compute-1.amazonaws.com:29379')
 
 let originHostUrl = '';
@@ -191,60 +190,7 @@ const newPassword = (req, res) => {
         }
     })
 }
-//use Facebook Strategy to login
 
-// passport.use(new FacebookStrategy(configFacebookAuth,
-// 	function(req, token, refreshToken, profile, done){
-// 		const username = profile.displayName + "@" + profile.provider
-// 		//check if there is a login user
-// 		const sid = req.cookies[cookieKey]
-// 		if(!sid){
-// 			User.findOne({username: username}).exec(function(err, user) {
-// 				if(!user || user.length === 0){
-// 					const userObj = new User({username: username, authId: profile.id})
-// 					new User(userObj).save(function (err, usr){
-// 						if(err) return console.log(err)
-// 					})
-// 					const profileObj = new Profile({username: username, headline: "login by facebook", following:[], email: null, zipcode: null, dob: new Date(1999,09,09).getTime(), avatar: "http://iconbug.com/data/8a/256/c72e39da5e258b482275a0319d00f7b7.png"})
-// 					new Profile(profileObj).save(function (err, usr){
-// 						if(err) return console.log(err)
-// 					})
-// 				}
-// 				return done(null, profile)
-// 			})
-// 		} else {
-// 			//if there is a local login, link them
-// 			redis.hgetall(sid, function(err, userObj) {
-// 				const localUser = userObj.username
-// 				Article.update({author:username}, { $set: { 'author': localUser}}, { new: true, multi: true }, function(){})
-// 				Article.update({'comments.author' : username}, { $set: {'comments.$.author': localUser}}, { new: true, multi: true }, function(){})
-// 				Comment.update({author:username}, { $set: { 'author': localUser}}, { new: true, multi: true }, function(){})
-// 				Profile.findOne({username: username}).exec(function(err, profileData){
-// 					if(profileData){
-// 						const oldFollowingArr = profileData.following
-// 						Profile.findOne({username: localUser}).exec(function(err, newProfile) {
-// 							if(newProfile){
-// 								//concat
-// 								const newFollowingArr = newProfile.following.concat(oldFollowingArr)
-// 								Profile.update({username: localUser}, {$set: {'following': newFollowingArr}}, function(){})
-// 							}
-// 						})
-// 						//delete the profile record
-// 						Profile.update({username: username}, {$set: {'following':[]}}, function(){})
-// 					}
-// 				})
-// 				User.findOne({username: localUser}).exec(function(err, user){
-// 					if(user){
-// 						let authObj = {}
-// 						authObj[`${profile.provider}`] = profile.displayName
-// 						User.update({username: localUser}, {$addToSet: {'auth': authObj}}, {new: true}, function(){})
-// 					}
-// 				})
-// 			})
-// 			return done(null, profile)
-// 		}
-// 	}
-// ))
 
 //use Google Strategy to login
 
@@ -332,20 +278,20 @@ function logout(req,res){
 }
 
 function isLoggedIn(req, res, next){
-    // check if third-party authenticated, if not, then check for our session+cookie
-    // if (req.isAuthenticated()) {
-    //     const usrArr = req.user.username.split('@');
-    //     const authObj = {}
-    //     authObj[`${usrArr[1]}`] = usrArr[0]
-    //     User.findOne({auth: authObj}).exec(function(err,user) {
-    //         if(!user){
-    //             req.username = req.user.username
-    //         } else {
-    //             req.username = user.username
-    //         }
-    //         next()
-    //     })
-    // } else{
+    check if third-party authenticated, if not, then check for our session+cookie
+    if (req.isAuthenticated()) {
+        const usrArr = req.user.username.split('@');
+        const authObj = {}
+        authObj[`${usrArr[1]}`] = usrArr[0]
+        User.findOne({auth: authObj}).exec(function(err,user) {
+            if(!user){
+                req.username = req.user.username
+            } else {
+                req.username = user.username
+            }
+            next()
+        })
+    } else{
         const sid = req.cookies[cookieKey]
 
         console.log("sid="+sid)
@@ -365,7 +311,7 @@ function isLoggedIn(req, res, next){
                 res.sendStatus(401)
             }
         })
-   // }
+    }
 
 }
 
@@ -392,22 +338,18 @@ module.exports = app => {
 
     app.use(locationFun)
     app.use(session({secret:'thisIsMySecretMessage', resave: false, saveUninitialized: false}))
-    //app.use(passport.initialize())
-  //  app.use(passport.session())
-    //app.use('/login/facebook', passport.authenticate('facebook', {scope:'email'}))
-   // app.use('/auth/facebook/callback', passport.authenticate('facebook', {failureRedirect:'/login/facebook'}), successFun, errorFun)
-   // app.use('/login/google', passport.authenticate('google', {scope:'profile'}))
-   // app.use('/auth/google/callback', passport.authenticate('google', {failureRedirect:'/login/google'}), successFun, errorFun)
+    app.use(passport.initialize())
+   app.use(passport.session())
+   app.use('/login/google', passport.authenticate('google', {scope:'profile'}))
+   app.use('/auth/google/callback', passport.authenticate('google', {failureRedirect:'/login/google'}), successFun, errorFun)
     app.post('/login', login);
     app.post('/register', register);
 
     app.use(isLoggedIn)
+   app.use('/link/google', passport.authorize('google', {scope:'profile'}))
 
-    //app.use('/link/facebook', passport.authorize('facebook', {scope:'email'}))
-   // app.use('/link/google', passport.authorize('google', {scope:'profile'}))
-
-   // app.post('/unlink', unlink)
-   // app.post('/merge', merge)
+   app.post('/unlink', unlink)
+   app.post('/merge', merge)
     app.put('/password', newPassword);
     app.put('/logout', logout);
 
