@@ -278,7 +278,7 @@ function logout(req,res){
 }
 
 function isLoggedIn(req, res, next){
-    check if third-party authenticated, if not, then check for our session+cookie
+  //  check if third-party authenticated, if not, then check for our session+cookie
     if (req.isAuthenticated()) {
         const usrArr = req.user.username.split('@');
         const authObj = {}
