@@ -1,0 +1,110 @@
+  .media-body{
+    height:30px;
+  }
+  .navbar-brand{
+    color:white;
+  }
+#submitButton{
+     background-color: cornflowerblue;
+   }
+   #Clear{
+     background-color: cornflowerblue;
+   }
+   #login{
+     background-color: cornflowerblue;
+   }
+    body{
+      background-color: lightyellow;
+      font-family: -apple-system, BlinkMacSystemFont;
+      font-size: 14px;
+      font-weight:bold;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    div.container{
+        border-style: outset;
+        padding: 20px;
+    }
+    .jumbotron {
+    padding:20px 20px 20px 20px;
+    margin:30px auto;
+    background-color:lightyellow;
+    }
+    #reg_frm_btn{
+        margin-left:auto;
+        margin-right:auto;
+
+        width:40%;
+    }
+    #lgn_frm_btn{
+        margin-left:50px;
+        /*margin-right:auto;*/
+
+    }
+    #Clear{
+        width:30%;
+        margin-left:20px;
+
+    }
+    #header{
+        margin-left:auto;
+        margin-right:auto;
+        width:35%;
+    }
+
+    #btn_lnk{
+        position: relative;
+        top:5px;
+    }
+    #img_lgn_fb{
+        width: 200px;
+        height: 50px;
+        margin-left:30px
+    }
+    img{
+        height: 100px;
+        width: 100px;
+        padding: 8px;
+    }
+    #contain-setting{
+        border-style: outset;
+        padding: 10px;
+        background-color: whitesmoke;
+    }
+    #search_area{
+        border-style: outset;
+        border-top-style: none;
+        border-bottom-style: none;
+        padding: 10px;
+    }
+    textarea{
+        width: 70%;
+          }
+    #update_sts_area{
+        margin-left: 25%;
+    }
+    #flwer_table{
+        margin-left:35%;
+    }
+    #profile_rice_img{
+        margin-left: 50%;
+        width: 200px;
+    }
+    #update_row{
+        border-bottom-style: outset;
+        padding: 10px;
+    }
+    #main_page_btn_row{
+        border-bottom-style: outset;
+        padding: 10px;
+    }
+    .row_table{
+        border-style: outset;
+        padding: 10px;
+    }
+    [contenteditable="true"] {
+        background-color: lightpink;
+    }
+    [contenteditable="true"]:focus {
+        background-color: white;
+    }
